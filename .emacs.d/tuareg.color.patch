@@ -1,0 +1,15 @@
+diff --git a/tuareg.el b/tuareg.el
+index a958532..c4cdc8d 100644
+--- a/tuareg.el
++++ b/tuareg.el
+@@ -498,8 +498,8 @@ Valid names are `browse-url', `browse-url-firefox', etc."
+ 
+ (defface tuareg-font-lock-governing-face
+   '((((class color) (type tty)) (:bold t))
+-    (((background light)) (:foreground "black" :bold t))
+-    (t (:foreground "wheat" :bold t)))
++    (((background light)) (:foreground "blue" :bold t))
++    (t (:foreground "orange" :bold t)))
+   "Face description for governing/leading keywords."
+   :group 'tuareg-faces)
+ (defvar tuareg-font-lock-governing-face
