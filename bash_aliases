@@ -1,5 +1,6 @@
 alias aptin='sudo aptitude   install'
 alias aptup='sudo aptitude   update'
+alias aptsup='sudo aptitude  safe-upgrade'
 alias aptp='sudo  aptitude purge'
 alias aptrm='sudo aptitude remove'
 alias apts='aptitude search'
