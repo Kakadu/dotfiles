@@ -90,6 +90,7 @@
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
 (add-to-list 'load-path "~/.emacs.d/tuareg")
+(require 'tuareg)
 (load "tuareg-site-file.el")
 
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
@@ -118,6 +119,7 @@
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 (require 'ocp-indent)
+(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
 
 
 
@@ -148,10 +150,5 @@
 
 (setq auto-mode-alist
         (cons '("Makefile\\.*" . makefile-mode) auto-mode-alist))
-;(global-set-key (read-kbd-macro "<Tab>") 'ocp-indent-line)
 
-; This, however, changes the keybindings of TAB and C-i, whichever is appropriate.
-;(local-set-key (kbd "TAB") 'tab-to-tab-stop)
-; This changes behavoir of tab key
-(global-set-key [tab] 'ocp-indent-line)
 
