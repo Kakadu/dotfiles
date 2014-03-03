@@ -4,6 +4,7 @@ filetype on
 
 " bitbake recipes
 au BufNewFile,BufRead *.bbappend set filetype=conf
+au BufNewFile,BufRead *emacs     set filetype=lisp
 
 " ocp-indent
 let g:ocp_indent_vimfile = system("opam config var share")
