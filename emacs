@@ -11,9 +11,9 @@
 (color-theme-initialize)
 (color-theme-dark-laptop)
 
-(scroll-bar-mode nil) ;; scroll bar
-(tool-bar-mode nil)   ;; tool bar
-(menu-bar-mode nil)   ;; menu bar
+(scroll-bar-mode -1) ;; scroll bar
+(tool-bar-mode -1)   ;; tool bar
+(menu-bar-mode -1)   ;; menu bar
 
 
 (setq file-name-coding-system 'utf-8)
@@ -89,18 +89,22 @@
 
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
-(add-to-list 'load-path (concat opam-share "/tuareg") ) 
-(load "tuareg-site-file")
+(add-to-list 'load-path "~/.emacs.d/tuareg")
+(require 'tuareg)
+(load "tuareg-site-file.el")
 
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
 (autoload 'camldebug "camldebug" "Run the Caml debugger" t)
 (autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
   	"Configuration of imenu for tuareg" t)
-;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 (setq auto-mode-alist
         (append '(("\\.ml[ily]?$" . tuareg-mode)
-	          ("\\.topml$" . tuareg-mode))
-                  auto-mode-alist))
+	          ("\\.eliom[i]?$" . tuareg-mode)
+	          ("\\.topml$" . tuareg-mode)
+		) auto-mode-alist
+	)
+)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; use Merlin mode for OCaml
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
@@ -113,8 +117,10 @@
 ;;;;;;; ocp-indent
 ;;; include statements same as for merlin
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-; (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 (require 'ocp-indent)
+(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
+
 
 
 ;;;;;;;; QML mode
@@ -141,5 +147,8 @@
 (autoload 'doc-mode "doc-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.adoc$" . doc-mode))
 (add-to-list 'auto-mode-alist '("\\.asciidoc$" . doc-mode))
+
+(setq auto-mode-alist
+        (cons '("Makefile\\.*" . makefile-mode) auto-mode-alist))
 
 

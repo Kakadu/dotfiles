@@ -3,8 +3,10 @@ colorscheme ron
 filetype on
 
 " bitbake recipes
-au BufNewFile,BufRead *.bbappend set filetype=conf
-au BufNewFile,BufRead *emacs     set filetype=lisp
+au BufNewFile,BufRead *.bbappend 	set filetype=conf
+" OCaml stuff
+au BufNewFile,BufRead *emacs     	set filetype=lisp
+au BufNewFile,BufRead *.eliom 		set filetype=ocaml
 
 " ocp-indent
 let g:ocp_indent_vimfile = system("opam config var share")

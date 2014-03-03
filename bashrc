@@ -56,11 +56,7 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-#if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[00m\] \$ '
-#else
-#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#fi
+PS1='\[\033[01;32m\]\u \[\033[01;34m\]\w\[\033[01;32m\]\$ \[\033[00m\]'
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
@@ -83,11 +79,6 @@ if [ -x /usr/bin/dircolors ]; then
     #alias fgrep='fgrep --color=auto'
     #alias egrep='egrep --color=auto'
 fi
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -117,10 +108,22 @@ with_qt5() {
   export PKG_CONFIG_PATH=`qmake -query QT_INSTALL_LIBS`/pkgconfig:$PKG_CONFIG_PATH
 }
 
+with_qt_stable() {
+  export PATH=~/mand/prog/qt/qt5.2/5.2.1/gcc_64/bin:$PATH
+  which qmake
+  qmake -query QT_VERSION
+  export LD_LIBRARY_PATH=`qmake -query QT_INSTALL_LIBS`:$LD_LIBRARY_PATH
+  export PKG_CONFIG_PATH=`qmake -query QT_INSTALL_LIBS`/pkgconfig:$PKG_CONFIG_PATH
+}
+
 evalopam() {
 	eval `opam config env`
 	ocamlc -version
 	ocamlc -where
 }
 evalopam
+
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
 
