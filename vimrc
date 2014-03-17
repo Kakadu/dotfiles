@@ -6,7 +6,8 @@ filetype on
 au BufNewFile,BufRead *.bbappend 	set filetype=conf
 " OCaml stuff
 au BufNewFile,BufRead *emacs     	set filetype=lisp
-au BufNewFile,BufRead *.eliom 		set filetype=ocaml
+au BufNewFile,BufRead *.eliom		set filetype=ocaml
+au BufNewFile,BufRead *.eliomi		set filetype=ocaml
 
 " ocp-indent
 let g:ocp_indent_vimfile = system("opam config var share")
