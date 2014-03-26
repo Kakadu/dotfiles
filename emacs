@@ -67,8 +67,10 @@
 
 ;;;;;;;;;;;;;; Whitespace config is not really tested for me
 (setq-default indent-tabs-mode nil) ; never use tab characters for indentation
-(setq tab-width 4                   ; set tab-width
+(setq tab-width 2                   ; set tab-width
       c-default-style "stroustrup"  ; indent style in CC mode
+      c-basic-offset 4
+      c-indent-level 4
       js-indent-level 2             ; indentation level in JS mode
       css-indent-offset 2           ; indentation level in CSS mode
 )
@@ -174,7 +176,7 @@
 ;;;;;;;;;; Doc-mode is requred for ASCII doc-mode
 ; Also it can be useful for C codeing (I have not tested that yet)
 (require 'doc-mode)
-(add-hook 'c-mode-common-hook 'doc-mode)
+;(add-hook 'c-mode-common-hook 'doc-mode)
 ;;; ASCIIDOC mode
 ; some useful fucntions for creating asciidoc documents (I don't enable them)
 ; https://github.com/metaperl/asciidoc-el/blob/master/asciidoc.adoc
@@ -186,6 +188,6 @@
 (add-to-list 'auto-mode-alist '("Makefile\\.*" . makefile-mode))
 (add-to-list 'auto-mode-alist '("emacs\\.*" . lisp-mode))
 
-
-
+; disabling overwrite mode
+(define-key global-map [(insert)] nil)
 
