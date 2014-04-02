@@ -3,7 +3,7 @@
     	email = kakadu.hafanana@gmail.com
 
 [core]
-    	excludesfile = /home/kakadu/.gitexcludes
+	excludesfile = ~/.gitexcludes
 	editor = vim
 
 [push]
