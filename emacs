@@ -60,10 +60,20 @@
 (show-paren-mode)
 
 ;;;;;;;;;;;;;; Color theme
-(add-to-list 'load-path "~/.emacs.d/color-theme/")
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-dark-laptop)
+(when (= emacs-major-version 24)
+  (message "emacs version 24")
+  ; emacs 24 color theme from: https://github.com/emacs-jp/replace-colorthemes
+  (load-theme 'dark-laptop t t)
+  (enable-theme 'dark-laptop)
+)
+(when (= emacs-major-version 23)
+  ;(message "emacs version 23")
+  (add-to-list 'load-path "~/.emacs.d/color-theme/")
+  (require 'color-theme)
+  (color-theme-initialize)
+  (color-theme-dark-laptop)
+)
+
 
 ;;;;;;;;;;;;;; Whitespace config is not really tested for me
 (setq-default indent-tabs-mode nil) ; never use tab characters for indentation
