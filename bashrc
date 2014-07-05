@@ -109,7 +109,9 @@ with_qt5() {
 }
 
 with_qt_stable() {
-  export PATH=~/mand/prog/qt/qt5.2/5.2.1/gcc_64/bin:$PATH
+  V=5.3
+  ROOT=~/mand/prog/qt/qt5.2
+  export PATH=$ROOT/$V/gcc_64/bin:$PATH
   which qmake
   qmake -query QT_VERSION
   export LD_LIBRARY_PATH=`qmake -query QT_INSTALL_LIBS`:$LD_LIBRARY_PATH
