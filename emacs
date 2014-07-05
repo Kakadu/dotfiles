@@ -11,6 +11,7 @@
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
 (fset 'yes-or-no-p 'y-or-n-p) ; use y or n instead of yes or not
+(define-key menu-bar-tools-menu [games] nil) ; disable games menu
 
 ;; Create a backup file
 (setq backup-by-copying t ; don't clobber symlinks
@@ -128,11 +129,14 @@
 
 ;;;;;;;;;;;;;;;;;; Autocompelte mode
 ; in emacs 24 it is available out-of-box. But I'm using emacs 23 at the moment
-(add-to-list 'load-path "~/.emacs.d/auto-complete-1.3.1")
-(require 'auto-complete)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-1.3.1/dict")
-(require 'auto-complete-config)
-(ac-config-default)
+(when (= emacs-major-version 23)
+  ;(message "emacs version 23")
+  (add-to-list 'load-path "~/.emacs.d/auto-complete-1.3.1")
+  (require 'auto-complete)
+  ;(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-1.3.1/dict")
+  ;(require 'auto-complete-config)
+  ;(ac-config-default)
+)
 
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
@@ -152,30 +156,45 @@
 		) auto-mode-alist
 	)
 )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; use Merlin mode for OCaml
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'merlin)
-
-(add-hook 'tuareg-mode-hook 'merlin-mode)
-(setq merlin-use-auto-complete-mode t)
-;(setq ac-start-auto nil)  ; to disable auto-complete
-
-;;;;;;; ocp-indent
-;;; include statements same as for merlin
-; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'ocp-indent)
-(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
-
-
-
 ;;;;;;;; QML mode
 ; QML mode from http://www.emacswiki.org/emacs/download/qml-mode.el
 ; is only for emacs 24
 ; QML mode from https://github.com/emacsmirror/qml-mode/blob/master/qml-mode.el
 (load "~/.emacs.d/qml-mode.el")
 (add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
+
+; cypher (neo4j) mode
+(load "~/.emacs.d/cypher-mode/cypher-mode.el")
+(add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; use Merlin mode for OCaml
+(defun string/starts-with (s begins)
+  "Return non-nil if string S starts with BEGINS."
+  (cond ((>= (length s) (length begins))
+         (string-equal (substring s 0 (length begins)) begins))
+         (t nil)))
+(setq ocaml-version (shell-command-to-string "ocamlc -version"))
+(message ocaml-version)
+(unless (string/starts-with ocaml-version "4.02")
+        (message "In this version of OCaml merlin is not broken")
+        (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+        (require 'merlin)
+)
+
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(setq merlin-use-auto-complete-mode nil)
+;(setq ac-start-auto nil)  ; to disable auto-complete
+
+;;;;;;; ocp-indent
+;;; include statements same as for merlin
+; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+;(require 'ocp-indent)
+;(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
+
+
 
 ;;;;;;;;; Bitbake files
 (setq auto-mode-alist (append '(("\\.bb" . conf-mode)
