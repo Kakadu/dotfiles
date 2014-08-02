@@ -23,3 +23,9 @@ function svndiff() {
   svn diff $@ 2>&1 > /tmp/svndiff.diff
   vim /tmp/svndiff.diff
 }
+function evalopam() {
+  eval `opam config env`
+  ocamlc -version
+  opam --version
+}
+
