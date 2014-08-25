@@ -12,6 +12,8 @@
 (menu-bar-mode -1)   ;; menu bar
 (fset 'yes-or-no-p 'y-or-n-p) ; use y or n instead of yes or not
 (define-key menu-bar-tools-menu [games] nil) ; disable games menu
+; disabling overwrite mode
+(define-key global-map [(insert)] nil)
 
 ;; Create a backup file
 (setq backup-by-copying t ; don't clobber symlinks
@@ -37,7 +39,9 @@
 
 (setq file-name-coding-system 'utf-8)
 
-(set-default-font "Monaco-13")
+(when (string= system-name "lemonad")
+  (set-default-font "Monaco-15") )
+
 ;(setq default-frame-alist '((font-backend . "xft")
 ;                            (font . "Inconsolata-14")
 ;                            (vertical-scroll-bars)
@@ -64,12 +68,12 @@
 (when (= emacs-major-version 24)
   (message "emacs version 24")
   ; emacs 24 color theme from: https://github.com/emacs-jp/replace-colorthemes
-  (load-theme 'dark-laptop t t)
-  (enable-theme 'dark-laptop)
+  (load-theme 'wheatgrass t)
+  ;(enable-theme 'dark-laptop)
 )
 (when (= emacs-major-version 23)
   ;(message "emacs version 23")
-  (add-to-list 'load-path "~/.emacs.d/color-theme/")
+  (add-to-list 'load-path "~/.emacs.d/color-theme-latest/")
   (require 'color-theme)
   (color-theme-initialize)
   (color-theme-dark-laptop)
@@ -140,7 +144,7 @@
 
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
-(add-to-list 'load-path "~/.emacs.d/tuareg")
+(add-to-list 'load-path "~/.emacs.d/tuareg-latest")
 (require 'tuareg)
 (load "tuareg-site-file.el")
 
@@ -164,9 +168,12 @@
 (add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
 
 ; cypher (neo4j) mode
-(load "~/.emacs.d/cypher-mode/cypher-mode.el")
-(add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode))
-
+(if (file-exists-p "~/.emacs.d/cypher-mode/cypher-mode.el")
+    ((load "~/.emacs.d/cypher-mode/cypher-mode.el")
+     (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
+    )
+    (message "Loading cypher skipped")
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; use Merlin mode for OCaml
@@ -204,7 +211,10 @@
 
 ;;;;;;;;;; Doc-mode is requred for ASCII doc-mode
 ; Also it can be useful for C codeing (I have not tested that yet)
-(require 'doc-mode)
+(if (condition-case nil (require 'doc-mode) (error nil))
+   ()
+ (message "DOC-mode is not available; not configuring") )
+
 ;(add-hook 'c-mode-common-hook 'doc-mode)
 ;;; ASCIIDOC mode
 ; some useful fucntions for creating asciidoc documents (I don't enable them)
@@ -217,6 +227,10 @@
 (add-to-list 'auto-mode-alist '("Makefile\\.*" . makefile-mode))
 (add-to-list 'auto-mode-alist '("emacs\\.*" . lisp-mode))
 
-; disabling overwrite mode
-(define-key global-map [(insert)] nil)
-
+; setting custom font face for keywords (like `if') in tuareg
+(set-face-attribute 'font-lock-keyword-face nil
+ :background "black"
+ :foreground "orange"
+ :weight     'bold
+; :family "Monaco-15"
+)

@@ -102,7 +102,7 @@ fi
 
 # useful functions
 with_qt5() {
-  export PATH=~/mand/prog/qt/qt5/qtbase/bin:$PATH
+  export PATH=~/prog/qt/qt5-git/qtbase/bin:$PATH
   qmake -query QT_VERSION
   export LD_LIBRARY_PATH=`qmake -query QT_INSTALL_LIBS`:$LD_LIBRARY_PATH
   export PKG_CONFIG_PATH=`qmake -query QT_INSTALL_LIBS`/pkgconfig:$PKG_CONFIG_PATH
@@ -110,7 +110,7 @@ with_qt5() {
 
 with_qt_stable() {
   V=5.3
-  ROOT=~/mand/prog/qt/qt5.2
+  ROOT=~/prog/qt/qt_off
   export PATH=$ROOT/$V/gcc_64/bin:$PATH
   which qmake
   qmake -query QT_VERSION
