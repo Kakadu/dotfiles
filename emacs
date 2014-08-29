@@ -201,3 +201,5 @@
 ; disabling overwrite mode
 (define-key global-map [(insert)] nil)
 
+; ProofGeneral
+(load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
