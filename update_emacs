@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -x -e
+
+EMACSD=$HOME/.emacs.d
+if [ ! -d "$EMACSD" ]; then
+  mkdir $EMACSD
+fi
+
+# tuareg 
+TUAREG=$EMACSD/tuareg-latest
+if [ ! -d "$TUAREG/.git" ]; then
+  git clone https://github.com/ocaml/tuareg.git $TUAREG
+  make -C $TUAREG
+fi
+
+# color thems
+COLOR_TARBALL="http://download.savannah.gnu.org/releases/color-theme/color-theme-6.6.0.tar.gz"
+COLOR_DIR="$EMACSD/color-theme-latest"
+if [ ! -e $COLOR_DIR ]; then
+  cd $EMACSD
+  wget $COLOR_TARBALL
+  TAR_NAME=`basename $COLOR_TARBALL`
+  tar -xf $TAR_NAME
+  rm -fr $TAR_NAME
+  DIR_NAME="${TAR_NAME%.*}"
+  DIR_NAME="${DIR_NAME%.*}"
+  echo $DIR_NAME
+  ln -s $DIR_NAME color-theme-latest
+  cd -
+fi
+
+# qml mode
+if [ ! -e $EMACSD/qml.el ]; then
+  cd $EMACSD
+  wget http://www.emacswiki.org/emacs/download/qml-mode.el
+  cd -
+fi
+
+
+
+exit 0
+
+

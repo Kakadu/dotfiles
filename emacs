@@ -1,16 +1,15 @@
 (setq inhibit-startup-message t)
 ; set default window size
 
-(setq default-frame-alist (append (list
- 	'(width  . 103) '(height . 29)
-) default-frame-alist))
-
 (add-to-list 'load-path "~/.emacs.d/")
 
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
 (fset 'yes-or-no-p 'y-or-n-p) ; use y or n instead of yes or not
+(define-key menu-bar-tools-menu [games] nil) ; disable games menu
+; disabling overwrite mode
+(define-key global-map [(insert)] nil)
 
 ;; Create a backup file
 (setq backup-by-copying t ; don't clobber symlinks
@@ -36,16 +35,17 @@
 
 (setq file-name-coding-system 'utf-8)
 
-(set-default-font "Monaco-13")
-;(setq default-frame-alist '((font-backend . "xft")
-;                            (font . "Inconsolata-14")
-;                            (vertical-scroll-bars)
-;                            (left-fringe . -1)
-;                            (right-fringe . -1)
-;                            (fullscreen . fullboth)
-;                            (menu-bar-lines . 0)
-;                            (tool-bar-lines . 0)
-;                            ))
+(when (string= system-name "lemonad")
+  (set-default-font "Monaco-15")
+)
+
+(when (string= "todoruk-pc" (car (split-string system-name "\\.")) )
+   (set-default-font "Monaco-13")
+   (setq default-frame-alist
+         '((top . 0) (left . 0)
+           (width . 125) (height . 44)
+           ) )
+)
 
 (custom-set-variables
   '(column-number-mode t)
@@ -63,12 +63,12 @@
 (when (= emacs-major-version 24)
   (message "emacs version 24")
   ; emacs 24 color theme from: https://github.com/emacs-jp/replace-colorthemes
-  (load-theme 'dark-laptop t t)
-  (enable-theme 'dark-laptop)
+  (load-theme 'wheatgrass t)
+  ;(enable-theme 'dark-laptop)
 )
 (when (= emacs-major-version 23)
   ;(message "emacs version 23")
-  (add-to-list 'load-path "~/.emacs.d/color-theme/")
+  (add-to-list 'load-path "~/.emacs.d/color-theme-latest/")
   (require 'color-theme)
   (color-theme-initialize)
   (color-theme-dark-laptop)
@@ -128,15 +128,18 @@
 
 ;;;;;;;;;;;;;;;;;; Autocompelte mode
 ; in emacs 24 it is available out-of-box. But I'm using emacs 23 at the moment
-(add-to-list 'load-path "~/.emacs.d/auto-complete-1.3.1")
-(require 'auto-complete)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-1.3.1/dict")
-(require 'auto-complete-config)
-(ac-config-default)
+(when (= emacs-major-version 23)
+  ;(message "emacs version 23")
+  (add-to-list 'load-path "~/.emacs.d/auto-complete-1.3.1")
+  (require 'auto-complete)
+  ;(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-1.3.1/dict")
+  ;(require 'auto-complete-config)
+  ;(ac-config-default)
+)
 
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
-(add-to-list 'load-path "~/.emacs.d/tuareg")
+(add-to-list 'load-path "~/.emacs.d/tuareg-latest")
 (require 'tuareg)
 (load "tuareg-site-file.el")
 
@@ -152,30 +155,48 @@
 		) auto-mode-alist
 	)
 )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; use Merlin mode for OCaml
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'merlin)
-
-(add-hook 'tuareg-mode-hook 'merlin-mode)
-(setq merlin-use-auto-complete-mode t)
-;(setq ac-start-auto nil)  ; to disable auto-complete
-
-;;;;;;; ocp-indent
-;;; include statements same as for merlin
-; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
-(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'ocp-indent)
-(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
-
-
-
 ;;;;;;;; QML mode
 ; QML mode from http://www.emacswiki.org/emacs/download/qml-mode.el
 ; is only for emacs 24
 ; QML mode from https://github.com/emacsmirror/qml-mode/blob/master/qml-mode.el
 (load "~/.emacs.d/qml-mode.el")
 (add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
+
+; cypher (neo4j) mode
+(if (file-exists-p "~/.emacs.d/cypher-mode/cypher-mode.el")
+    ((load "~/.emacs.d/cypher-mode/cypher-mode.el")
+     (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
+    )
+    (message "Loading cypher skipped")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; use Merlin mode for OCaml
+(defun string/starts-with (s begins)
+  "Return non-nil if string S starts with BEGINS."
+  (cond ((>= (length s) (length begins))
+         (string-equal (substring s 0 (length begins)) begins))
+         (t nil)))
+(setq ocaml-version (shell-command-to-string "ocamlc -version"))
+(message ocaml-version)
+(unless (string/starts-with ocaml-version "4.02")
+        (message "In this version of OCaml merlin is not broken")
+        (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+        (require 'merlin)
+)
+
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(setq merlin-use-auto-complete-mode nil)
+;(setq ac-start-auto nil)  ; to disable auto-complete
+
+;;;;;;; ocp-indent
+;;; include statements same as for merlin
+; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+;(require 'ocp-indent)
+;(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
+
+
 
 ;;;;;;;;; Bitbake files
 (setq auto-mode-alist (append '(("\\.bb" . conf-mode)
@@ -185,7 +206,10 @@
 
 ;;;;;;;;;; Doc-mode is requred for ASCII doc-mode
 ; Also it can be useful for C codeing (I have not tested that yet)
-(require 'doc-mode)
+(if (condition-case nil (require 'doc-mode) (error nil))
+   ()
+ (message "DOC-mode is not available; not configuring") )
+
 ;(add-hook 'c-mode-common-hook 'doc-mode)
 ;;; ASCIIDOC mode
 ; some useful fucntions for creating asciidoc documents (I don't enable them)
@@ -203,3 +227,14 @@
 
 ; ProofGeneral
 (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+
+; setting custom font face for keywords (like `if') in tuareg
+(set-face-attribute 'font-lock-keyword-face nil
+ :background "black"
+ :foreground "orange"
+ :weight     'bold
+; :family "Monaco-15"
+)
+
+
+

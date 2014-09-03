@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -x -e
+
+FONTSDIR=$HOME/.fonts
+if [ ! -d "$FONTSDIR" ]; then
+  mkdir $FONTSDIR
+fi
+
+INCONSOLATA=$FONTSDIR/Inconsolata-LGC
+if [ ! -d "$INCONSOLATA/.git" ]; then
+  git clone https://github.com/DeLaGuardo/Inconsolata-LGC.git $INCONSOLATA
+fi
+
+MONACO=$FONTSDIR/monaco-cstrap
+if [ ! -d "$MONACO/.git" ]; then
+  git clone https://github.com/cstrap/monaco-font.git $MONACO
+fi
+
+fc-list | egrep -wi --color "monaco|inconsolata"
+

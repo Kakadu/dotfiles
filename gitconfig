@@ -37,7 +37,9 @@
     	untracked = cyan
 
 [alias]
-    	st = status
+    	aa = add --all --intent-to-add
+ 	ap = add --all --intent-to-add
+	st = status
 	ci = commit
 	br = branch
 	co = checkout
