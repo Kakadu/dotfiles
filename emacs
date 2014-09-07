@@ -1,12 +1,16 @@
 (setq inhibit-startup-message t)
 ; set default window size
 
-(setq default-frame-alist (append (list
- 	'(width  . 103) '(height . 29)
-) default-frame-alist))
+;(setq default-frame-alist (append (list
+; 	'(width  . 103) '(height . 29)
+;) default-frame-alist))
 
 (add-to-list 'load-path "~/.emacs.d/")
 
+(setq default-frame-alist (append (list
+  '(width  . 103) '(height . 35)
+) default-frame-alist) )
+ 
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
@@ -40,7 +44,12 @@
 (setq file-name-coding-system 'utf-8)
 
 (when (string= system-name "lemonad")
-  (set-default-font "Monaco-15") )
+  (set-default-font "Monaco-15")
+  (setq default-frame-alist (append (list
+    '(width  . 103) '(height . 44)
+  ) default-frame-alist) )
+
+)
 
 ;(setq default-frame-alist '((font-backend . "xft")
 ;                            (font . "Inconsolata-14")
