@@ -1,16 +1,12 @@
 (setq inhibit-startup-message t)
 ; set default window size
 
-;(setq default-frame-alist (append (list
-; 	'(width  . 103) '(height . 29)
-;) default-frame-alist))
-
 (add-to-list 'load-path "~/.emacs.d/")
 
 (setq default-frame-alist (append (list
   '(width  . 103) '(height . 35)
 ) default-frame-alist) )
- 
+
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
@@ -45,21 +41,19 @@
 
 (when (string= system-name "lemonad")
   (set-default-font "Monaco-15")
-  (setq default-frame-alist (append (list
-    '(width  . 103) '(height . 44)
-  ) default-frame-alist) )
-
+  (setq default-frame-alist
+         '((top . 0) (left . 0)
+           (width . 103) (height . 44)
+           ) )
 )
 
-;(setq default-frame-alist '((font-backend . "xft")
-;                            (font . "Inconsolata-14")
-;                            (vertical-scroll-bars)
-;                            (left-fringe . -1)
-;                            (right-fringe . -1)
-;                            (fullscreen . fullboth)
-;                            (menu-bar-lines . 0)
-;                            (tool-bar-lines . 0)
-;                            ))
+(when (string= "todoruk-pc" (car (split-string system-name "\\.")) )
+   (set-default-font "Monaco-13")
+   (setq default-frame-alist
+         '((top . 0) (left . 0)
+           (width . 125) (height . 44)
+           ) )
+)
 
 (custom-set-variables
   '(column-number-mode t)
@@ -163,7 +157,7 @@
   	"Configuration of imenu for tuareg" t)
 (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 (setq auto-mode-alist
-        (append '(("\\.ml[ily]?$" . tuareg-mode)
+        (append '(("\\.ml[ily4]?$" . tuareg-mode)
 	          ("\\.eliom[i]?$" . tuareg-mode)
 	          ("\\.topml$" . tuareg-mode)
 		) auto-mode-alist
@@ -235,6 +229,14 @@
 
 (add-to-list 'auto-mode-alist '("Makefile\\.*" . makefile-mode))
 (add-to-list 'auto-mode-alist '("emacs\\.*" . lisp-mode))
+
+; disabling overwrite mode
+(define-key global-map [(insert)] nil)
+
+; ProofGeneral
+(if (file-exists-p "~/.emacs.d/ProofGeneral")
+ (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+)
 
 ; setting custom font face for keywords (like `if') in tuareg
 (set-face-attribute 'font-lock-keyword-face nil
