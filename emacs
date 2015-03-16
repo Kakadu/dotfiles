@@ -179,11 +179,12 @@
          (t nil)))
 (setq ocaml-version (shell-command-to-string "ocamlc -version"))
 (message ocaml-version)
-(unless (string/starts-with ocaml-version "4.02")
-        (message "In this version of OCaml merlin is not broken")
+;(unless (string/starts-with ocaml-version "4.02")
+        ;(message "In this version of OCaml merlin is not broken")
+        ;(message opam-share)
         (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
         (require 'merlin)
-)
+;)
 
 (add-hook 'tuareg-mode-hook 'merlin-mode)
 (setq merlin-use-auto-complete-mode nil)
@@ -193,7 +194,7 @@
 ;;; include statements same as for merlin
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-;(require 'ocp-indent)
+(require 'ocp-indent)
 ;(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
 
 
@@ -238,3 +239,14 @@
 
 
 
+(if (= emacs-major-version 24)
+  (if (file-exists-p "~/.emacs.d/scala-mode2")
+    (progn
+      (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
+      (require 'scala-mode2)
+      ;(load-file "~/.emacs.d/scala-mode2/scala-mode2.el")
+    )
+    (message "scala-mode2 is not installed")
+  )
+  (message "scala-mode2 available only for emacs24")
+)
