@@ -3,6 +3,10 @@
 
 (add-to-list 'load-path "~/.emacs.d/")
 
+(setq default-frame-alist (append (list
+  '(width  . 103) '(height . 35)
+) default-frame-alist) )
+
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
@@ -37,6 +41,10 @@
 
 (when (string= system-name "lemonad")
   (set-default-font "Monaco-15")
+  (setq default-frame-alist
+         '((top . 0) (left . 0)
+           (width . 103) (height . 44)
+           ) )
 )
 
 (when (string= "todoruk-pc" (car (split-string system-name "\\.")) )
@@ -149,7 +157,7 @@
   	"Configuration of imenu for tuareg" t)
 (add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 (setq auto-mode-alist
-        (append '(("\\.ml[ily]?$" . tuareg-mode)
+        (append '(("\\.ml[ily4]?$" . tuareg-mode)
 	          ("\\.eliom[i]?$" . tuareg-mode)
 	          ("\\.topml$" . tuareg-mode)
 		) auto-mode-alist
@@ -227,7 +235,9 @@
 (define-key global-map [(insert)] nil)
 
 ; ProofGeneral
-(load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+(if (file-exists-p "~/.emacs.d/ProofGeneral")
+ (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+)
 
 ; setting custom font face for keywords (like `if') in tuareg
 (set-face-attribute 'font-lock-keyword-face nil
@@ -236,8 +246,6 @@
  :weight     'bold
 ; :family "Monaco-15"
 )
-
-
 
 (if (= emacs-major-version 24)
   (if (file-exists-p "~/.emacs.d/scala-mode2")
@@ -250,3 +258,4 @@
   )
   (message "scala-mode2 available only for emacs24")
 )
+
