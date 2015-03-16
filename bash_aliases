@@ -29,3 +29,8 @@ function evalopam() {
   opam --version
 }
 
+
+if [ -x ~/.bashfnocvs ]; then
+	source ~/.bashfnocvs
+fi
+
