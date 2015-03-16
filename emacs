@@ -3,10 +3,6 @@
 
 (add-to-list 'load-path "~/.emacs.d/")
 
-(setq default-frame-alist (append (list
-  '(width  . 103) '(height . 35)
-) default-frame-alist) )
-
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
 (menu-bar-mode -1)   ;; menu bar
@@ -39,11 +35,16 @@
 
 (setq file-name-coding-system 'utf-8)
 
+; geometry hacks
+(setq default-frame-alist (append (list
+  '(width  . 103) '(height . 35)
+) default-frame-alist) )
+
 (when (string= system-name "lemonad")
-  (set-default-font "Monaco-15")
+  (set-default-font "Monaco-13")
   (setq default-frame-alist
-         '((top . 0) (left . 0)
-           (width . 103) (height . 44)
+         '((top . 1) (left . 0)
+           (width . 125) (height . 53)
            ) )
 )
 
@@ -187,11 +188,11 @@
          (t nil)))
 (setq ocaml-version (shell-command-to-string "ocamlc -version"))
 (message ocaml-version)
-(unless (string/starts-with ocaml-version "4.02")
+;(unless (string/starts-with ocaml-version "4.02")
         (message "In this version of OCaml merlin is not broken")
         (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
         (require 'merlin)
-)
+;)
 
 (add-hook 'tuareg-mode-hook 'merlin-mode)
 (setq merlin-use-auto-complete-mode nil)
@@ -245,3 +246,5 @@
  :weight     'bold
 ; :family "Monaco-15"
 )
+
+
