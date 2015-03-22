@@ -149,20 +149,24 @@
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
 (add-to-list 'load-path "~/.emacs.d/tuareg-latest")
-(require 'tuareg)
-(load "tuareg-site-file.el")
-
-(autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-;(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu" "Configuration of imenu for tuareg" t)
-;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
-(setq auto-mode-alist
-        (append '(("\\.ml[ily4]?$" . tuareg-mode)
-	          ("\\.eliom[i]?$" . tuareg-mode)
-	          ("\\.topml$" . tuareg-mode)
-		) auto-mode-alist
-	)
+(if (locate-library "tuareg")
+  (progn
+    (require 'tuareg)
+    (load "tuareg-site-file.el")
+    ; I like orange keywords more
+    (set-face-attribute 'tuareg-font-lock-governing-face nil :foreground "orange")
+    (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
+    (setq auto-mode-alist
+          (append '(("\\.ml[ily4]?$" . tuareg-mode)
+                    ("\\.eliom[i]?$" . tuareg-mode)
+                    ("\\.topml$" . tuareg-mode)
+                    ) auto-mode-alist
+          )
+    )
+  )
+  (message "can't find tuareg-mode")
 )
+
 ;;;;;;;; QML mode
 ; QML mode from http://www.emacswiki.org/emacs/download/qml-mode.el
 ; is only for emacs 24
