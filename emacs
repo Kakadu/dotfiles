@@ -153,10 +153,9 @@
 (load "tuareg-site-file.el")
 
 (autoload 'tuareg-mode "tuareg" "Major mode for editing Caml code" t)
-(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
-(autoload 'tuareg-imenu-set-imenu "tuareg-imenu"
-  	"Configuration of imenu for tuareg" t)
-(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+;(autoload 'camldebug "camldebug" "Run the Caml debugger" t)
+;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu" "Configuration of imenu for tuareg" t)
+;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
 (setq auto-mode-alist
         (append '(("\\.ml[ily4]?$" . tuareg-mode)
 	          ("\\.eliom[i]?$" . tuareg-mode)
@@ -172,11 +171,13 @@
 (add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
 
 ; cypher (neo4j) mode
-(if (file-exists-p "~/.emacs.d/cypher-mode/cypher-mode.el")
-    ((load "~/.emacs.d/cypher-mode/cypher-mode.el")
-     (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
-    )
-    (message "Loading cypher skipped")
+(add-to-list 'load-path "~/.emacs.d/tuareg-latest")
+(if (locate-library "cypher-mode")
+  (progn'
+    (require 'cypher-mode)
+    (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
+  )
+  (message "Loading cypher-mode skipped")
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -190,18 +191,26 @@
 (message ocaml-version)
         ;(message "In this version of OCaml merlin is not broken")
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'merlin)
+(if (locate-library "merlin")
+  (require 'merlin)
+  (message "merlin is not available")
+)
 
 
 (add-hook 'tuareg-mode-hook 'merlin-mode)
-(setq merlin-use-auto-complete-mode nil)
+;(setq merlin-use-auto-complete-mode nil)      ; disables auto-complete
+(setq merlin-use-auto-complete-mode 'easy)
+;(require 'company-mode)            ; not tryed yet
 ;(setq ac-start-auto nil)  ; to disable auto-complete
 
 ;;;;;;; ocp-indent
 ;;; include statements same as for merlin
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
-(require 'ocp-indent)
+(if (locate-library "ocp-indent")
+  (require 'ocp-indent)
+  (message "ocp-indent is not available")
+)
 ;(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
 
 
@@ -214,9 +223,10 @@
 
 ;;;;;;;;;; Doc-mode is requred for ASCII doc-mode
 ; Also it can be useful for C codeing (I have not tested that yet)
-(if (condition-case nil (require 'doc-mode) (error nil))
-   ()
- (message "DOC-mode is not available; not configuring") )
+(if (locate-library "doc-mode")
+  (require 'doc-mode)
+  (message "DOC-mode is not available; not configuring")
+)
 
 ;(add-hook 'c-mode-common-hook 'doc-mode)
 ;;; ASCIIDOC mode
@@ -257,4 +267,3 @@
   )
   (message "scala-mode2 available only for emacs24")
 )
-
