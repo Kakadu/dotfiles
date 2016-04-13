@@ -1,6 +1,10 @@
 *.cm[oiax]
+*.cma
 *~
 *.o
 \#*\#
 *.pro.user
+
+#
+*.suo
 
