@@ -1,10 +1,13 @@
-*.cm[oiax]
-*.cma
+*.cm[oiatx]
+*.cmti
 *~
 *.o
 \#*\#
 *.pro.user
 
-#
+
 *.suo
+*.creator.user
+#vim edited file
+*.swp
 
