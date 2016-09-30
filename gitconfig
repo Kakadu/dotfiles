@@ -40,8 +40,8 @@
     	aa = add --all --intent-to-add
  	ap = add --all --intent-to-add
 	st = status
-	ci = commit
 	br = branch
+	ci = commit
 	co = checkout
     	df = diff
     	dc = diff --cached

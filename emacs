@@ -36,9 +36,13 @@
 (setq file-name-coding-system 'utf-8)
 
 ; geometry hacks
-(setq default-frame-alist (append (list
-  '(width  . 103) '(height . 35)
-) default-frame-alist) )
+  ;; (setq initial-frame-alist
+  ;;        '((top . 1) (left . 0)
+  ;;          (width . 135) (height . 53)
+  ;;          ) )
+;; (setq default-frame-alist (append (list
+;;   '(width  . 103) '(height . 35)
+;; ) default-frame-alist) )
 
 (when (string= system-name "lemonad")
   (set-default-font "Monaco-13")
@@ -49,12 +53,14 @@
 )
 
 (when (string= "todoruk-pc" (car (split-string system-name "\\.")) )
-   (set-default-font "Monaco-13")
-   (setq default-frame-alist
+  (progn
+    (message "todoruk")
+    (set-default-font "Monaco-13")
+    (setq initial-frame-alist
          '((top . 0) (left . 0)
-           (width . 125) (height . 44)
-           ) )
-)
+           (width . 255) (height . 74)
+           ) ) ) )
+
 
 (custom-set-variables
   '(column-number-mode t)
@@ -212,12 +218,12 @@
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 (if (locate-library "ocp-indent")
-  (require 'ocp-indent)
-  (message "ocp-indent is not available")
-)
-;(define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line)
-
-
+  (progn'
+    ;(require 'ocp-indent)
+    (load "ocp-indent.el")
+    (define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line))
+  (message "ocp-indent is not available"))
+;
 
 ;;;;;;;;; Bitbake files
 (setq auto-mode-alist (append '(("\\.bb" . conf-mode)
@@ -271,3 +277,18 @@
   )
   (message "scala-mode2 available only for emacs24")
 )
+
+(global-set-key (kbd "M-`") 'other-frame)
+
+(require 'package)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa-stable" . "http://stable.melpa.org/packages/")))))
+
+(load "~/.opam/4.02.3/share/emacs/site-lisp/ocp-indent.el")
