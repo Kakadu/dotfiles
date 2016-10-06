@@ -60,7 +60,15 @@
     	main-window-view = HistoryView
 
 # TODO: maybe disable this commit template or use it only for Qt related repos
-[commit]
-    	template = ../qt5/.commit-template
+#[commit]
+#    	template = ../qt5/.commit-template
 
+#[diff]
+#    tool = vimdiff
 
+[url "git://anongit.kde.org/"]
+    insteadOf = kde:
+[url "ssh://git@git.kde.org/"]
+    pushInsteadOf = kde:
+[url "git@git.kde.org:"]
+	pushInsteadOf = kde:

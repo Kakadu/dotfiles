@@ -129,3 +129,13 @@ if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
 fi
 
+
+export NVM_DIR="/home/kakadu/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# Koding
+# ssh kakadu@ukkk82883334.kakadu.koding.io -i ~/.ssh/koding
+# scp -i ~/.ssh/koding torrents/solntsevo.3of3.torrent kakadu@ukkk82883334.kakadu.koding.io:/home/kakadu/solntsevo3of3.torrent
+
+
+

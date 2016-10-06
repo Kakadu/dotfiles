@@ -1,2 +1,27 @@
-#use "topfind";;
+(* Added by OPAM. *)
+let () =
+  try Topdirs.dir_directory (Sys.getenv "OCAML_TOPLEVEL_PATH")
+  with Not_found -> ()
+;;
 
+#use "topfind";;
+#require "compiler-libs";;
+#require "ppx_tools";;
+
+(* simplify output of location in parsetree*)
+let location_printer fmt (_:Location.t) = Format.fprintf fmt "<loc>";;
+#install_printer location_printer;;
+
+(*#directory "./utils";;
+#load "warnings.cmo";;
+#load "config.cmo";;
+#load "clflags.cmo";;
+#load "misc.cmo";;
+#directory "./parsing";;
+#load "location.cmo";;
+#load "docstrings.cmo";;
+#load "ast_helper.cmo";;
+#load "ast_mapper.cmo";;
+*)
+(* ## added by OPAM user-setup for ocamltop / base ## 3ec62baf6f9c219ae06d9814069da862 ## you can edit, but keep this line *)
+(* ## end of OPAM user-setup addition for ocamltop / base ## keep this line *)

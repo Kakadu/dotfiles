@@ -1,7 +1,7 @@
 (setq inhibit-startup-message t)
 ; set default window size
 
-(add-to-list 'load-path "~/.emacs.d/")
+;(add-to-list 'load-path "~/.emacs.d/")
 
 (scroll-bar-mode -1) ;; scroll bar
 (tool-bar-mode -1)   ;; tool bar
@@ -43,24 +43,19 @@
 ;; (setq default-frame-alist (append (list
 ;;   '(width  . 103) '(height . 35)
 ;; ) default-frame-alist) )
+(setq default-frame-alist (append (list
+  '(width  . 113) '(height . 35)
+) default-frame-alist) )
 
 (when (string= system-name "lemonad")
-  (set-default-font "Monaco-13")
+  ;(set-default-font "Monaco-14")
+;  (set-default-font "Dejavu-Sans-Mono-Book-14")
+  (set-default-font "Ubuntu-14")
   (setq default-frame-alist
          '((top . 1) (left . 0)
-           (width . 125) (height . 53)
+           (width . 189) (height . 53)
            ) )
-)
-
-(when (string= "todoruk-pc" (car (split-string system-name "\\.")) )
-  (progn
-    (message "todoruk")
-    (set-default-font "Monaco-13")
-    (setq initial-frame-alist
-         '((top . 0) (left . 0)
-           (width . 255) (height . 74)
-           ) ) ) )
-
+ )
 
 (custom-set-variables
   '(column-number-mode t)
@@ -152,6 +147,13 @@
   ;(ac-config-default)
 )
 
+(defun opam-env ()
+  (interactive nil)
+  (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+    (setenv (car var) (cadr var))))
+
+(opam-env)
+
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 ;;;;;;;;;;;;;;;;;; tuareg mode for OCaml
 (add-to-list 'load-path "~/.emacs.d/tuareg-latest")
@@ -177,18 +179,18 @@
 ; QML mode from http://www.emacswiki.org/emacs/download/qml-mode.el
 ; is only for emacs 24
 ; QML mode from https://github.com/emacsmirror/qml-mode/blob/master/qml-mode.el
-(load "~/.emacs.d/qml-mode.el")
-(add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
+;(load "~/.emacs.d/qml-mode.el")
+;(add-to-list 'auto-mode-alist '("\\.qml" . qml-mode))
 
 ; cypher (neo4j) mode
-(add-to-list 'load-path "~/.emacs.d/tuareg-latest")
-(if (locate-library "cypher-mode")
-  (progn'
-    (require 'cypher-mode)
-    (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
-  )
-  (message "Loading cypher-mode skipped")
-)
+;(add-to-list 'load-path "~/.emacs.d/tuareg-latest")
+;(if (locate-library "cypher-mode")
+ ; (progn'
+;    (require 'cypher-mode)
+;    (add-to-list 'auto-mode-alist '("\\.cfr" . cypher-mode) )
+;  )
+;  (message "Loading cypher-mode skipped")
+;)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; use Merlin mode for OCaml
@@ -218,12 +220,11 @@
 ; (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
 (if (locate-library "ocp-indent")
-  (progn'
-    ;(require 'ocp-indent)
-    (load "ocp-indent.el")
+  (progn
+    (require 'ocp-indent)
     (define-key tuareg-mode-map (kbd "TAB") 'ocp-indent-line))
-  (message "ocp-indent is not available"))
-;
+  (message "ocp-indent is not available")
+)
 
 ;;;;;;;;; Bitbake files
 (setq auto-mode-alist (append '(("\\.bb" . conf-mode)
@@ -254,9 +255,22 @@
 (define-key global-map [(insert)] nil)
 
 ; ProofGeneral
-(if (file-exists-p "~/.emacs.d/ProofGeneral")
- (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
-)
+;(if (file-exists-p "~/.emacs.d/ProofGeneral")
+; (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+;)
+
+;(if (file-exists-p "~/.emacs.d/haskell-mode")
+;    (add-to-list 'load-path "~/.emacs.d/haskell-mode/")
+;    (message "haskell-mode not installed")
+;)
+;(if (locate-library "haskell-mode")
+;  (progn'
+;    (require 'haskell-mode-autoloads)
+;    (add-to-list 'Info-default-directory-list "~/.emacs.d/haskell-mode/"))
+;  (message "can't load haskell mode")
+;)
+
+
 
 ; setting custom font face for keywords (like `if') in tuareg
 (set-face-attribute 'font-lock-keyword-face nil
@@ -264,18 +278,6 @@
  :foreground "orange"
  :weight     'bold
 ; :family "Monaco-15"
-)
-
-(if (= emacs-major-version 24)
-  (if (file-exists-p "~/.emacs.d/scala-mode2")
-    (progn
-      (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
-      (require 'scala-mode2)
-      ;(load-file "~/.emacs.d/scala-mode2/scala-mode2.el")
-    )
-    (message "scala-mode2 is not installed")
-  )
-  (message "scala-mode2 available only for emacs24")
 )
 
 (global-set-key (kbd "M-`") 'other-frame)
@@ -292,3 +294,9 @@
      ("melpa-stable" . "http://stable.melpa.org/packages/")))))
 
 (load "~/.opam/4.02.3/share/emacs/site-lisp/ocp-indent.el")
+
+(add-hook 'c-mode-common-hook
+          (lambda () (define-key c-mode-base-map (kbd "C-c C-c") 'compile)))
+
+
+

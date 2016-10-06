@@ -1,7 +1,7 @@
 alias aptin='sudo apt-fast install'
 alias aptup='sudo apt-fast update'
 alias aptsup='sudo apt-fast safe-upgrade'
-alias aptp='sudo  aptitude purge'
+alias -g aptp='sudo  aptitude purge'
 alias aptrm='sudo aptitude remove'
 alias aptre='sudo apt-fast reinstall'
 alias apts='aptitude search'
@@ -15,6 +15,7 @@ alias bitbkae=bitbake
 alias ls='ls --color=auto'
 alias la='ls -a'
 alias ll='ls -l'
+alias tolower="find . -depth -exec rename 's/(.*)\/([^\/]*)/$1\/\L$2/' {} \;"
 
 alias grep='grep --color=auto -n'
 
@@ -27,6 +28,7 @@ function svndiff() {
   svn diff $@ 2>&1 > /tmp/svndiff.diff
   vim /tmp/svndiff.diff
 }
+
 function evalopam() {
   eval `opam config env`
   ocamlc -version

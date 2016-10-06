@@ -10,4 +10,5 @@
 *.creator.user
 #vim edited file
 *.swp
+_build
 
