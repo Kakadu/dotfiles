@@ -12,10 +12,8 @@ if [ ! -d "$INCONSOLATA/.git" ]; then
 fi
 
 # Monaco font for windows can be found there: http://www.gringod.com/2006/11/01/new-version-of-monaco-font/
-MONACO=$FONTSDIR/monaco-cstrap
-if [ ! -d "$MONACO/.git" ]; then
-  git clone https://github.com/cstrap/monaco-font.git $MONACO
-fi
+wget -O ~/.fonts/Monaco_Linux.ttf http://www.gringod.com/wp-upload/software/Fonts/Monaco_Linux.ttf
 
+fc-cache -v
 fc-list | egrep -wi --color "monaco|inconsolata"
 
