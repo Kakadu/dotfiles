@@ -1,63 +1,58 @@
 [user]
-    	name = kakadu
-    	email = kakadu.hafanana@gmail.com
+	name = kakadu
+	email = kakadu.hafanana@gmail.com
 
 [core]
 	excludesfile = ~/.gitexcludes
 	editor = vim
 
 [push]
-    	default = upstream
+	default = upstream
 
 #[pager]
 #    	status = on
 
 [merge]
-    	defaulttoupstream = true
+	defaulttoupstream = true
 
 [color]
-    	diff = auto
-    	branch = auto
-    	status = auto
+	diff = auto
+	branch = auto
+	status = auto
 
 [color "branch"]
-    	current = yellow reverse
-    	local = yellow
-    	remote = green
+	current = yellow reverse
+	local = yellow
+	remote = green
 
 [color "diff"]
-    	meta = yellow bold
-    	frag = magenta bold
-    	old = red bold
-    	new = green bold
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
 
 [color "status"]
-    	added = yellow
-    	changed = green
-    	untracked = cyan
+	added = yellow
+	changed = green
+	untracked = cyan
 
 [alias]
-    	aa = add --all --intent-to-add
- 	ap = add --all --intent-to-add
+	aa = add --all --intent-to-add
+	ap = add --all --intent-to-add
 	st = status
 	br = branch
 	ci = commit
 	co = checkout
-    	df = diff
-    	dc = diff --cached
-    	lg = log -p
-    	lol = log --graph --decorate --pretty=oneline --abbrev-commit
-    	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	df = diff
+	dc = diff --cached
+	lg = log -p
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
 	ls = ls-files
 	tree=log --graph --decorate --pretty=oneline --abbrev-commit
 	vlog=log --graph --date-order --date=relative --pretty=format:'%C(white)%h: %Cgreen - %an - %Cred %C(cyan)%ar:%Creset%n%s%n' --color
-
-[giggle]
-    	main-window-maximized = true
-    	main-window-geometry = 511x236+0+0
-    	history-view-vpane-position = 228
-    	file-view-vpane-position = 670
-    	main-window-view = HistoryView
+	bl=~/bin/git-blame-colored
+	pul=pull
 
 # TODO: maybe disable this commit template or use it only for Qt related repos
 #[commit]
